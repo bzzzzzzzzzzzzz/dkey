@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    #netframe {
+        float:right; 
+        height: 550px; 
+        width: 80%;
+    }
+
+    #sidebar {
+        float:left; 
+        height: 100%; 
+        width: 20%;
+    }
+
+	html {
+	height: 50%;
+	font-family: 'Roboto Mono', monospace;
+	}
+
+	body {
+	background: #3a2351dd;
+	color: #FFFFFF;
+	}
+
+	div {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	font-family: 'Roboto Mono', monospace;
+	}
+
+	div#container {
+	margin: 15px;
+	}
+
+	div#drop-zone {
+	height: 400px;
+	width: 400px;
+	border: 2px dotted #ebebeb;
+	}
+
+	div#drop-zone:hover {
+	background-color: gray;
+	border: 1px dotted #000000;
+	cursor: move;
+	}
+
+	div#content {
+	border: 1px solid #FFF;
+	margin-top: 15px;
+	padding: 10px;
+	}
+
+	.header-input {
+		position: relative;
+		background-color: transparent;
+		top: 20px;
+		left: 80%; 
+		transform: translateX(-50%);
+		width: 33%;
+		z-index: 1000;
+		text-align: center;
+		font-family: 'Roboto Mono', monospace;
+	}
+
+	.header-input2 {
+		position: absolute;
+		background-color: transparent;
+		top: 36px;
+		left: 20%; 
+		transform: translateX(-50%);
+		width: 33%;
+		z-index: 1000;
+		text-align: center;
+		font-family: 'Roboto Mono', monospace;
+	}
+
+	.header-input input {
+		background-color: #3a23517e; 
+		color: white;
+		height: 32px;
+		border: 2px solid grey; 
+		padding: 10px;
+		width: 100%;
+		font-family: 'Roboto Mono', monospace;
+		font-size: 16px;
+		text-overflow: ellipsis;
+		overflow: hidden; 
+		white-space: nowrap;
+	}
+
+	.header-input2 input {
+		background-color: #3a23517e; 
+		color: white;
+		height: 32px;
+		border: 2px solid grey; 
+		padding: 10px;
+		width: 100%;
+		font-family: 'Roboto Mono', monospace;
+		font-size: 16px;
+		text-overflow: ellipsis;
+		overflow: hidden; 
+		white-space: nowrap;
+	}
+
+	/* taken from browser aes */
+
+	a, a:link, a:visited, a:active {
+				color: blue;
+				text-decoration: underline;
+			}
+
+			a:hover {
+				cursor:pointer;
+				color: red;
+			}
+
+			.black10pointcourier {
+				font-family: 'courier'; 
+				color: black;
+				font-size: 10pt;		
+			}
+
+			.container {
+				width: 80%;
+				margin: 0 auto;
+			}
+
+			.dropzone {
+				border: 10px dashed gray;
+				width: 20%;
+				padding: 10% 10% 10% 10%;
+				text-align: center;
+				margin: 5px 0 5px 0;
+			}
+
+			.divTablefullwidth{
+				display: table;
+				width: 100%;
+			}
+
+			.divTable{
+				display: table;
+			}
+
+			.divTableRow {
+				display: table-row;
+			}
+			.divTableCell {
+				display: table-cell;
+				padding: 3px 3px;
+			}
+			.divTableBody {
+				display: table-row-group;
+			}
+
+			.greenspan {
+				color: green;	  
+			}
+
+			.redspan {
+				color: red;	  
+			}
+
+
+</style>
+
+
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <title>DKEY PoC - ALICE</title>
+</head>
+  <body>
+    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+    <script src="./bootstrap.js"></script>
+    <script src="snarkjs.min.js"></script>
+  </body>
+<p></p>
+<div class="header-input2">
+	<input type="text" id="Alice_Wallet_Pk" placeholder="alice's eth address [hit ENTER]">
+</div>	
+<div class="header-input">
+	<input type="text" id="Smart_Contract_Address" placeholder="'test' contract address [hit ENTER]">
+</div>	
+<br>
+<br>
+<br>
+
+<!-- GENERATE SECRET KEY PAIR -->
+
+<p></p>
+<div>
+  <h3>#1:&emsp;generate secret key pair</h3>
+<button id="Trigger_Generate_Secret_KeyPair">generate secret keys</button>
+</div>
+<br>
+<div>
+  <label for="var1">secret key pair (keep these safe):</label>
+  <input type="text" id="secret_key_x_1" style="width: 450px;"/>
+  <input type="text" id="secret_key_y_1" style="width: 450px;"/>
+</div>
+<br>
+<p></p>
+<br>
+<br>
+<br>
+
+<!-- ENCRYPT FILE -->
+
+<div>
+  <h3>#2:&emsp;encrypt file</h3>
+  </div>
+<div class="container" id=divEncryptfile>
+  <p> </p>
+
+  <div>
+    <div class=dropzone id="encdropzone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);" ondragend="dragend_handler(event);">
+      <p>Drag and drop file, or click <a onclick=javascript:encfileElem.click();>here</a> to select file.</p>
+      <p><span id=spnencfilename></span></p>
+    </div>
+    <input type="file" id="encfileElem" style="display:none" onchange="selectfile(this.files)">
+  </div>
+
+  <p> </p>
+
+
+  <div>
+    <div><button id=btnEncrypt onclick=javascript:encryptfile(); disabled>Encrypt File</button></div>
+      <div class="divTableCell"><span id=spnEncstatus></span></div>
+  </div>
+
+
+  <p> </p>
+
+  <div>
+    <a id=aEncsavefile hidden><button>Save Encrypted File</button></a>
+  </div>
+
+  <p> </p>
+</div>
+<br>
+<br>
+<br>
+
+<!-- UPLOAD FILE TO IPFS PINNING SERVICE -->
+
+<p></p>
+<div>
+  <h3>#3:&emsp;upload encrypted file to ipfs</h3>
+  </div>
+<body>
+  <div>
+    <p>[ upload to IPFS <a href="https://www.storj.io/ipfs">here</a>... ]</p>
+  </div>
+</body>
+<br>
+<br>
+<br>
+
+<!-- CREATE LISTING -->
+
+<p></p>
+<div>
+  <h3>#4:&emsp;create listing</h3>
+</div>
+<div>
+<p2>
+  <input type="text" id="IPFS_CID_Alice_1" placeholder="Enter IPFS CID of encrypted file" style="width: 450px;"><br>
+  <input type="text" id="file_type_1" placeholder="Enter file type (eg: jpg, mp4, wav)" style="width: 450px;"><br>
+  <input type="text" id="royalty_percentage_1" placeholder="Enter royalty % (eg: 5, 10, 15)" style="width: 450px;"><br>
+  <input type="text" id="DKEY_Price" placeholder="Enter price (in ether) for Bob to access encrypted file" style="width: 450px;"><br>
+  <input type="text" id="Number_of_DKeys" placeholder="Enter # of DKeys to be made available for sale" style="width: 450px;"><br>
+  <input type="text" id="secret_key_x_2" placeholder="Enter secret key X-value" style="width: 450px;"><br>
+  <input type="text" id="secret_key_y_2" placeholder="Enter secret key Y-value" style="width: 450px;"><br>
+</p2>
+</div>
+<div>
+<button id="Copy_Paste_1">↓</button></div>
+<br>
+<div>
+<button id="Trigger_Listing_Creation">create Listing</button>
+</div>
+<br>
+<p></p>
+<br>
+<br>
+<br>
+
+<div>
+  <p>[ BOB makes a <a href="bob-index.html">payment</a>... ]</p>
+</div>
+
+<p></p>
+<br>
+<p></p>
+
+<!-- CHECK SMART CONTRACT EVENTS TO SEE IF ANY BOBS HAVE MADE BIDS -->
+
+<div>
+  <h3>#5:&emsp;check listing to see if any Bobs have paid</h3>
+</div>
+  <div>
+  <input type="text" id="IPFS_CID_Alice_2" placeholder="Enter IPFS CID of encrypted file" style="width: 450px;"><br>
+</div>
+
+  <div>
+	<button id="Copy_Paste_2">↓</button>
+  </div>
+    <br>
+	<div><button id="checkIfPaymentReceived">check for payment events</button>
+    </div>
+    <br>
+  <div>
+    <label for="var5"> # of Bobs that have paid:</label>
+    <input type="text" id="var5" style="width: 450px;"/>
+  </div>
+  <div>
+    <label for="var20"> ipfs cid:</label>
+    <input type="text" id="var20" style="width: 450px;"/>
+  </div>
+  <div>
+    <label for="Bob_PublicKeyX_Event">Bob public key X-value:</label>
+    <input type="text" id="Bob_PublicKeyX_Event" style="width: 450px;"/>
+  </div>
+  <div>
+    <label for="Bob_PublicKeyY_Event">Bob public key Y-value:</label>
+    <input type="text" id="Bob_PublicKeyY_Event" style="width: 450px;"/>
+  </div>
+</div>
+
+<p></p>
+<br>
+<br>
+<br>
+<br>
+<p></p>
+
+<!-- FILL BIDS -->
+
+<div>
+  <h3>#6:&emsp;send dkey (encrypted for Bob) to listing</h3>
+  </div>
+  <div id="div">
+  <p2>
+    <input type="text" id="IPFS_CID_Alice_3" placeholder="Enter IPFS CID of encrypted file" style="width: 450px;"><br>
+    <input type="text" id="Bob_PublicKeyX" placeholder="Enter Bob's public key X-value" style="width: 450px;"><br>
+    <input type="text" id="Bob_PublicKeyY" placeholder="Enter Bob's public key Y-value" style="width: 450px;"><br>
+    <input type="text" id="secret_key_x_3" placeholder="Enter Secret Key X-value" style="width: 450px;"><br>
+    <input type="text" id="secret_key_y_3" placeholder="Enter Secret Key Y-value" style="width: 450px;"><br>
+    
+	<div><button id="Copy_Paste_3">↓</button></div>
+	<br>
+    <div><button type="button" id="Trigger_DKey_Creation">create & send dkey</button><br></div>
+    <br>
+    <div>
+    <label for="var31"> zkp generation and verification...:</label>
+    <input type="text" id="var31" style="width: 450px;"/>
+    </div>
+  </p2>
+</div>
+
+<p></p>
+<br>
+<p></p>
+
+<!-- END! -->
+
+
+
+
+<!-- transparent elements (need to be present or bootstrap.js/index.js throws error when re-using same js for both html pages)-->
+<div style="opacity: 0;">
+  <button id="Bob_Makes_Payment">null</button>
+  <button id="generateBobKeys">null</button>
+  <button id="Trigger_Bob_Derives_Secret_Key_Pair">null</button>
+  <button id="Trigger_Load_IPFS_File">Load IPFS File</button><br>
+  <button id="divDecryptfile">null</button><br>
+  <button id="btnRefresh" onClick="javascript:location.reload();">Refresh Page</button>
+	<button id="btnDivEncrypt" onClick="javascript:switchdiv('encrypt');">Encrypt a File</button>
+	<button id="btnDivDecrypt" onClick="javascript:switchdiv('decrypt');">Decrypt a File</button>
+	<button id="Copy_Paste_4">↓</button>
+	<input type="text" id="Bob_Wallet_Pk" placeholder="Enter Bob's ethereum address (0x...)">
+	<button id="Copy_Paste_5">↓</button><br>
+	<button id="bobChecksIfPaymentReceived">check for payment events</button>
+	<button id="Copy_Paste_6">↓</button>
+	<button type="button" id="Trigger_Bob_Sells_DKey">sell dkey</button>
+
+</div>
+</html>
+
+
+
+
+<!-- taken from https://github.com/meixler/web-browser-based-file-encryption-decryption/blob/ec55f1fa9c8c02d8a8048777f67ca77021b9a207/web-browser-based-file-encryption-decryption.html#L255 -->
+
+<script type="text/javascript">
+	var mode=null;
+	var objFile=null;
+	switchdiv('encrypt');
+
+	function switchdiv(t) {
+		if(t=='encrypt') {
+			divEncryptfile.style.display='block';
+			divDecryptfile.style.display='none';
+			btnDivEncrypt.disabled=true;
+			btnDivDecrypt.disabled=false;
+			mode='encrypt';
+		} else if(t=='decrypt') {
+			divEncryptfile.style.display='none';
+			divDecryptfile.style.display='block';
+			btnDivEncrypt.disabled=false;
+			btnDivDecrypt.disabled=true;
+			mode='decrypt';
+		}
+	}
+
+	function encvalidate() {
+		if( objFile ) { btnEncrypt.disabled=false; } else { btnEncrypt.disabled=true; }
+	}
+
+	function decvalidate() {
+		if( objFile ) { btnDecrypt.disabled=false; } else { btnDecrypt.disabled=true; }
+	}
+
+	//drag and drop functions:
+	//https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
+	function drop_handler(ev) {
+		console.log("Drop");
+		ev.preventDefault();
+		// If dropped items aren't files, reject them
+		var dt = ev.dataTransfer;
+		if (dt.items) {
+			// Use DataTransferItemList interface to access the file(s)
+			for (var i=0; i < dt.items.length; i++) {
+				if (dt.items[i].kind == "file") {
+					var f = dt.items[i].getAsFile();
+					console.log("... file[" + i + "].name = " + f.name);
+					objFile=f;
+				}
+			}
+		} else {
+			// Use DataTransfer interface to access the file(s)
+			for (var i=0; i < dt.files.length; i++) {
+				console.log("... file[" + i + "].name = " + dt.files[i].name);
+			}  
+			objFile=file[0];
+		}		 
+		displayfile()
+		if(mode=='encrypt') { encvalidate(); } else if(mode=='decrypt') { decvalidate(); }
+	}
+
+	function dragover_handler(ev) {
+		console.log("dragOver");
+		// Prevent default select and drag behavior
+		ev.preventDefault();
+	}
+
+	function dragend_handler(ev) {
+		console.log("dragEnd");
+		// Remove all of the drag data
+		var dt = ev.dataTransfer;
+		if (dt.items) {
+			// Use DataTransferItemList interface to remove the drag data
+			for (var i = 0; i < dt.items.length; i++) {
+				dt.items.remove(i);
+			}
+		} else {
+			// Use DataTransfer interface to remove the drag data
+			ev.dataTransfer.clearData();
+		}
+	}
+
+	function selectfile(Files) {
+		objFile=Files[0];
+		displayfile()
+		if(mode=='encrypt') { encvalidate(); } else if(mode=='decrypt') { decvalidate(); }
+	}
+
+	function displayfile() {
+		var s;
+		var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+		var bytes=objFile.size;
+		var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+		if(i==0) { s=bytes + ' ' + sizes[i]; } else { s=(bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i]; }
+
+		if(mode=='encrypt') { 
+			spnencfilename.textContent=objFile.name + ' (' + s + ')'; 
+		} else if(mode=='decrypt') {  
+			spndecfilename.textContent=objFile.name + ' (' + s + ')'; 
+		} 
+	}
+
+	function readfile(file){
+		return new Promise((resolve, reject) => {
+			var fr = new FileReader();  
+			fr.onload = () => {
+				resolve(fr.result )
+			};
+			fr.readAsArrayBuffer(file);
+		});
+	}
+
+	async function encryptfile() {
+		btnEncrypt.disabled=true;
+
+		var plaintextbytes=await readfile(objFile)
+		.catch(function(err){
+			console.error(err);
+		});	
+		var plaintextbytes=new Uint8Array(plaintextbytes);
+
+		var pbkdf2iterations=10000;
+		var passphrasebytes=new TextEncoder("utf-8").encode(secret_key_x_1.value + secret_key_y_1.value);
+		var pbkdf2salt=window.crypto.getRandomValues(new Uint8Array(8));
+
+		var passphrasekey=await window.crypto.subtle.importKey('raw', passphrasebytes, {name: 'PBKDF2'}, false, ['deriveBits'])
+		.catch(function(err){
+			console.error(err);
+		});
+		console.log('passphrasekey imported');
+
+		var pbkdf2bytes=await window.crypto.subtle.deriveBits({"name": 'PBKDF2', "salt": pbkdf2salt, "iterations": pbkdf2iterations, "hash": 'SHA-256'}, passphrasekey, 384)		
+		.catch(function(err){
+			console.error(err);
+		});
+		console.log('pbkdf2bytes derived');
+		pbkdf2bytes=new Uint8Array(pbkdf2bytes);
+
+		keybytes=pbkdf2bytes.slice(0,32);
+		ivbytes=pbkdf2bytes.slice(32);
+
+		var key=await window.crypto.subtle.importKey('raw', keybytes, {name: 'AES-CBC', length: 256}, false, ['encrypt']) 
+		.catch(function(err){
+			console.error(err);
+		});
+		console.log('key imported');		
+
+		var cipherbytes=await window.crypto.subtle.encrypt({name: "AES-CBC", iv: ivbytes}, key, plaintextbytes)
+		.catch(function(err){
+			console.error(err);
+		});
+
+		if(!cipherbytes) {
+		 	spnEncstatus.classList.add("redspan");
+			spnEncstatus.innerHTML='<p>Error encrypting file.  See console log.</p>';
+			return;
+		}
+
+		console.log('plaintext encrypted');
+		cipherbytes=new Uint8Array(cipherbytes);
+
+		var resultbytes=new Uint8Array(cipherbytes.length+16)
+		resultbytes.set(new TextEncoder("utf-8").encode('Salted__'));
+		resultbytes.set(pbkdf2salt, 8);
+		resultbytes.set(cipherbytes, 16);
+
+		var blob=new Blob([resultbytes], {type: 'application/download'});
+		var blobUrl=URL.createObjectURL(blob);
+		aEncsavefile.href=blobUrl;
+		aEncsavefile.download=objFile.name + '.enc';
+
+	 	spnEncstatus.classList.add("greenspan");
+		spnEncstatus.innerHTML='<p>File encrypted.</p>';
+		aEncsavefile.hidden=false;
+	}
+
+	async function decryptfile() {
+		btnDecrypt.disabled=true;
+
+		var cipherbytes=await readfile(objFile)
+		.catch(function(err){
+			console.error(err);
+		});	
+		var cipherbytes=new Uint8Array(cipherbytes);
+
+		var pbkdf2iterations=10000;
+		var passphrasebytes=new TextEncoder("utf-8").encode(txtDecpassphrase.value);
+		var pbkdf2salt=cipherbytes.slice(8,16);
+
+
+		var passphrasekey=await window.crypto.subtle.importKey('raw', passphrasebytes, {name: 'PBKDF2'}, false, ['deriveBits'])
+		.catch(function(err){
+			console.error(err);
+
+		});
+		console.log('passphrasekey imported');
+
+		var pbkdf2bytes=await window.crypto.subtle.deriveBits({"name": 'PBKDF2', "salt": pbkdf2salt, "iterations": pbkdf2iterations, "hash": 'SHA-256'}, passphrasekey, 384)		
+		.catch(function(err){
+			console.error(err);
+		});
+		console.log('pbkdf2bytes derived');
+		pbkdf2bytes=new Uint8Array(pbkdf2bytes);
+
+		keybytes=pbkdf2bytes.slice(0,32);
+		ivbytes=pbkdf2bytes.slice(32);
+		cipherbytes=cipherbytes.slice(16);
+
+		var key=await window.crypto.subtle.importKey('raw', keybytes, {name: 'AES-CBC', length: 256}, false, ['decrypt']) 
+		.catch(function(err){
+			console.error(err);
+		});
+		console.log('key imported');		
+
+		var plaintextbytes=await window.crypto.subtle.decrypt({name: "AES-CBC", iv: ivbytes}, key, cipherbytes)
+		.catch(function(err){
+			console.error(err);
+		});
+
+		if(!plaintextbytes) {
+		 	spnDecstatus.classList.add("redspan");
+			spnDecstatus.innerHTML='<p>Error decrypting file.  Password may be incorrect.</p>';
+			return;
+		}
+
+		console.log('ciphertext decrypted');
+		plaintextbytes=new Uint8Array(plaintextbytes);
+
+		var blob=new Blob([plaintextbytes], {type: 'application/download'});
+		var blobUrl=URL.createObjectURL(blob);
+		aDecsavefile.href=blobUrl;
+		aDecsavefile.download=objFile.name + '.dec';
+
+	 	spnDecstatus.classList.add("greenspan");
+		spnDecstatus.innerHTML='<p>File decrypted.</p>';
+		aDecsavefile.hidden=false;
+	}
+
+</script>

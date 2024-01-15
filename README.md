@@ -46,7 +46,7 @@ what’s in the development pipeline?
             - a portion of the accumulated fees to go to further protocol development
 
 
-Usage:
+## Usage:
 
 If you don't have it, download Ganache (https://trufflesuite.com/ganache/).
 - Set up a new workspace with

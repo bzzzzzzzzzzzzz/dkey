@@ -88,7 +88,9 @@ The rest should be easy enough to follow...
     - https://github.com/Shigoto-dev19/ec-elgamal-circom
     - chatgpt
     - circom/snarkjs
+
 (for all the packages/pieces of code I've borrowed).
 
 Get in touch if you're interested in collaborating!
+
 -bzz

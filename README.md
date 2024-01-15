@@ -45,11 +45,10 @@ what’s in the development pipeline?
             - token holders can vote on proposals (protocol changes, “official” frontends, etc)
             - a portion of the accumulated fees to go to further protocol development
 
-## Usage
 
-Deploy 'Test' contract to local development blockchain (using truffle below, but hardhat or whatever will work --
-just make sure to link the 'Test' and 'Verifier' contracts and make sure MetaMask/other wallet provider is set up on the same network)...
 
+
+Usage:
 
 If you don't have it, download Ganache from here: 
     - https://trufflesuite.com/ganache/
@@ -84,7 +83,6 @@ Do the same on Bob's page.
 
 The rest should be easy enough to follow.
 
-## Thanks!!!
 
 Big thanks to...
     - https://github.com/meixler/web-browser-based-file-encryption-decryption/blob/ec55f1fa9c8c02d8a8048777f67ca77021b9a207/web-browser-based-file-encryption-decryption.html#L255

@@ -84,12 +84,12 @@ Do the same on Bob's page.
 The rest should be easy enough to follow.
 
 
-Big thanks to...
+Big thanks to:
     - https://github.com/meixler/web-browser-based-file-encryption-decryption/blob/ec55f1fa9c8c02d8a8048777f67ca77021b9a207/web-browser-based-file-encryption-decryption.html#L255
     - https://github.com/Shigoto-dev19/ec-elgamal-circom
     - chatgpt
     - circom/snarkjs
-...for the packages/pieces of code I've borrowed.
+(for all the packages/pieces of code I've borrowed).
 
 Get in touch if you're interested in collaborating!
 -bzz

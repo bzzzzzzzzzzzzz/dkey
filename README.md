@@ -46,13 +46,10 @@ what’s in the development pipeline?
             - a portion of the accumulated fees to go to further protocol development
 
 
-
-
 Usage:
 
-If you don't have it, download Ganache from here: 
-    - https://trufflesuite.com/ganache/
-Set up a new workspace with:
+If you don't have it, download Ganache (https://trufflesuite.com/ganache/).
+- Set up a new workspace with
     - NETWORK ID: 5777
     - RPC SERVER: HTTP://127.0.0.1:8080
     - under "TRUFFLE PROJECTS", link to the truffle-config.js file
@@ -84,7 +81,7 @@ Do the same on Bob's page.
 The rest should be easy enough to follow.
 
 
-Big thanks to:
+- Big thanks to:
     - https://github.com/meixler/web-browser-based-file-encryption-decryption/blob/ec55f1fa9c8c02d8a8048777f67ca77021b9a207/web-browser-based-file-encryption-decryption.html#L255
     - https://github.com/Shigoto-dev19/ec-elgamal-circom
     - chatgpt

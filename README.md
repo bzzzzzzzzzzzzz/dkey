@@ -53,8 +53,16 @@ what’s in the development pipeline?
 
 ## Usage
 
+Download the repo (click on the green "<> Code" button above, then "Download ZIP"). 
+
+Open up terminal (mac) or cmd (windows) and navigate to the unzipped folder, ex:
+```bash
+$ cd downloads
+$ cd dkey-main
+```
+
 If you don't have them, download Ganache (https://trufflesuite.com/ganache/) and Node (https://nodejs.org/en/download).
-- Set up a new Ganache Workspace with
+- Open Ganache and set up a new Workspace with:
     - NETWORK ID: 5777
     - RPC SERVER: HTTP://127.0.0.1:8080
     - under "TRUFFLE PROJECTS", link to the truffle-config.js file
@@ -78,8 +86,15 @@ Go to http://localhost:8081/ (or whatever 'http-server' gives) in your browser.
 
 If you don't have it, download the MetaMask extension for your browser.
 Set up a new network by going to Settings > Networks > Add a network > Add a network manually (set it up with RPC URL: HTTP://127.0.0.1:8080).
-Create two new Metamask Accounts with the top two addresses under the "ACCOUNTS" tab in the Ganache Workspace.
-Manually connect MetaMask to the website, if it doesn't do so automatically.
+
+Create two new Metamask Accounts: 
+- for each of the top two addresses under the "ACCOUNTS" tab in the Ganache Workspace, grab the private keys (click on the key icon on the right, copy the private key)
+- in the MetaMask browser extension: 
+    - click on the Account drop down, then "+ Add account or hardware wallet", then "Import Account", and paste in the private key
+
+Manually connect MetaMask to the website (if it doesn't do so automatically):
+- in the MetaMask browser extension: 
+    - click the three dots at the top right, then "Connected sites", then "Manually connect to current site"
 
 Input one of the two addresses into the top left field - this will be "Alice".
 Input the 'Test' smart contract address into the top right field.

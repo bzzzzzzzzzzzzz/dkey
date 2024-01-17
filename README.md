@@ -53,6 +53,10 @@ what’s in the development pipeline?
 
 ## Usage
 
+** This repo should be taken as a proof of concept only. Use the steps below to set up a local blockchain and see the smart contract functionality work -- or just open the html files in "dist" to see the example user flow **
+
+...
+
 Download the repo (click on the green "<> Code" button above, then "Download ZIP"). 
 
 Open up terminal (mac) or cmd (windows) and navigate to the unzipped folder, ex:
@@ -84,24 +88,26 @@ $ http-server
 
 Go to http://localhost:8081/ (or whatever 'http-server' gives) in your browser.
 
-If you don't have it, download the MetaMask extension for your browser.
-Set up a new network by going to Settings > Networks > Add a network > Add a network manually (set it up with RPC URL: HTTP://127.0.0.1:8080).
+If you don't have it, download the MetaMask extension for your browser (https://metamask.io/download/).
 
-Create two new Metamask Accounts: 
-- for each of the top two addresses under the "ACCOUNTS" tab in the Ganache Workspace, grab the private keys (click on the key icon on the right, copy the private key)
-- in the MetaMask browser extension: 
+In the MetaMask browser extension: 
+- set up a new network by going to Settings > Networks > Add a network > Add a network manually (set it up with RPC URL: HTTP://127.0.0.1:8080).
+- create two new Metamask Accounts: 
+    - grab the private keys for each of the top two addresses under the "ACCOUNTS" tab in the Ganache Workspace (click on the key icon on the right, copy the private key)
     - click on the Account drop down, then "+ Add account or hardware wallet", then "Import Account", and paste in the private key
-
-Manually connect MetaMask to the website (if it doesn't do so automatically):
-- in the MetaMask browser extension: 
+- manually connect MetaMask to the website (if it doesn't do so automatically):
     - click the three dots at the top right, then "Connected sites", then "Manually connect to current site"
 
 Input one of the two addresses into the top left field - this will be "Alice".
 Input the 'Test' smart contract address into the top right field.
 Do the same on Bob's page.
 
-The rest should be easy enough to follow...
+The rest should be easy enough to follow. To make demo easier: 
+- bob's page only displays decrypted jpg's, so use a jpg as the encrypted file
+- right-click on links and open in new tab (for bob and ipfs upload) 
+- and use the down-arrow buttons instead of copy-pasting values
 
+...
 
 Big thanks to:
 - https://github.com/meixler/web-browser-based-file-encryption-decryption/blob/ec55f1fa9c8c02d8a8048777f67ca77021b9a207/web-browser-based-file-encryption-decryption.html#L255

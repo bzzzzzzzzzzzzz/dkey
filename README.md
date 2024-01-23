@@ -21,10 +21,10 @@ what is the DKEY protocol?
 
 what’s in the development pipeline?
 - frontend:
-    - main page should be a dashboard, where:
+    - main page to be a dashboard, where:
         - dashboard lets you search through LISTINGs
         - when you click on a LISTING from the dashboard, you’ll be taken to BOB’s page where you’ll able to bid, etc
-    - better UX
+    - UX:
         - make everything more pretty
         - use a framework
         - streamline/simplify the user flow
@@ -34,26 +34,24 @@ what’s in the development pipeline?
     - needs a sane way to store/retrieve files to/from ipfs 
     - end product should be a static page on ipfs
 - protocol:
-    - smart contract functionality
-        - implement functions that return BOB's funds after some amount of time has elapsed (in the event that ALICE hasn't provided a DKEY)
     - gas optimizations
         - byte packing, change the IPFS HASH from base64 so it can fit into a bytes32, don’t need to save variables to memory in functions, etc
     - auditing
         - smart contracts
         - cryptography (confirm zk circuit & el gamal are implemented correctly)
-        - front end (confirm it doesn’t leak keys)
+        - front end (finalize production frontend, confirm it doesn’t leak keys)
     - needs a subgraph (to read event data)
     - $DKEY ERC20 token + fee distribution mechanism
         - create token contract
             - accumulated fees to be issued to token holders
-            - governance(?)
+            - governance
                 - token holders can vote on proposals (protocol changes, “official” frontends, etc)
                 - a portion of the accumulated fees to go to further protocol development
 
 
 ## Usage
 
-** This repo should be taken as a proof of concept only. Use the steps below to set up a local blockchain and see the smart contract functionality work -- or just open the html files in "dist" to see the example user flow **
+** This repo should be taken as a proof of concept only. Use the steps below to set up a local blockchain and see the smart contract & zkSNARKs work -- or just open the html files in "dist" to see the example user flow **
 
 ...
 
@@ -68,7 +66,7 @@ $ cd dkey-main
 If you don't have them, download Ganache (https://trufflesuite.com/ganache/) and Node (https://nodejs.org/en/download).
 - Open Ganache and set up a new Workspace with:
     - NETWORK ID: 5777
-    - RPC SERVER: HTTP://127.0.0.1:8080
+    - PORT: 8080
     - under "TRUFFLE PROJECTS", link to the truffle-config.js file
 
 Use truffle to deploy contracts:
@@ -77,7 +75,7 @@ $ npm install -g truffle
 $ truffle migrate
 ```
 
-Grab the contract address that 'Test' is deployed to.
+From the terminal, grab the contract address that 'Test' is deployed to.
 
 Serve the website to your browser:
 ```bash
@@ -96,15 +94,15 @@ In the MetaMask browser extension:
     - grab the private keys for each of the top two addresses under the "ACCOUNTS" tab in the Ganache Workspace (click on the key icon on the right, copy the private key)
     - click on the Account drop down, then "+ Add account or hardware wallet", then "Import Account", and paste in the private key
 - manually connect MetaMask to the website (if it doesn't do so automatically):
-    - click the three dots at the top right, then "Connected sites", then "Manually connect to current site"
+    - click the three dots at the top right > "Connected sites" > "Manually connect to current site"
 
 Input one of the two addresses into the top left field - this will be "Alice".
 Input the 'Test' smart contract address into the top right field.
-Do the same on Bob's page.
+(Do the same when you get to Bob's page)
 
 The rest should be easy enough to follow. To make demo easier: 
 - bob's page only displays decrypted jpg's, so use a jpg as the encrypted file
-- right-click on links and open in new tab (for bob and ipfs upload) 
+- right-click on links and open in new tab (for bob's page and ipfs upload) 
 - and use the down-arrow buttons instead of copy-pasting values
 
 ...

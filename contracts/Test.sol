@@ -40,6 +40,7 @@ contract Test {
         mapping (uint => bool) bobsThatHavePaid; // using x-value of bob's decrypting public key only (can't map a uint[2]) -- this should(?) be secure... other option is concatenate, then do the mapping....
         mapping (uint => uint) bobsByBidAmounts;
         mapping (uint => bool) bobsThatHaveBeenProvidedDKeys;
+        mapping (uint => uint) bobsByEthAddress;
         bool bobsCanSellTheirDkeys;
     } 
     
@@ -65,6 +66,7 @@ contract Test {
         allListings[_ipfsCid].bobsThatHavePaid[_bobDecryptingPubKey[0]] = true;
         emit PaymentReceived(_ipfsCid, _ipfsCid, _bobDecryptingPubKey, msg.sender, msg.value, allListings[_ipfsCid].bobsCanSellTheirDkeys);
         allListings[_ipfsCid].bobsByBidAmounts[_bobDecryptingPubKey[0]] = msg.value;
+        allListings[_ipfsCid].bobsByEthAddress[uint256(uint160(address(msg.sender)))] = _bobDecryptingPubKey[0];
     }
     
     function aliceSendsDKey(bytes memory _ipfsCid, uint[2] calldata _pA, uint[2][2] calldata _pB, uint[2] calldata _pC, uint[7] calldata _pubSignals) public {
@@ -154,9 +156,12 @@ contract Test {
         allListings[_ipfsCid].howManyDKeysSold += 1;
     }
 
-    // TODO: a function to return bob's funds after so many blocks (in the event that alice doesn't respond to payment w a key)
-    //  how best to track which bobs paid what amount? add mapping (uint => uint) howMuchEachBobHasPaid to the listing? also needs a reference to that bob's eth address
-    //  how is the gas paid for? should be alice that pays for the txn to return bob's funds
+    function bobReclaimsBid(bytes memory _ipfsCid) public {
+        uint256 bobDecryptingPubKeyX = allListings[_ipfsCid].bobsByEthAddress[uint256(uint160(address(msg.sender)))];
+        uint256 returnAmount = allListings[_ipfsCid].bobsByBidAmounts[bobDecryptingPubKeyX];
+        require(allListings[_ipfsCid].bobsThatHavePaid[bobDecryptingPubKeyX]);
+        payable(msg.sender).transfer(returnAmount);
+    }
 
     // TODO: create "DKEY" ERC20 token. "owner" contract should distribute the accumulated fees to token holders.
 
